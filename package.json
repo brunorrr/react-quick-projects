@@ -1,0 +1,8 @@
+{
+  "name": "react-quick-projects",
+  "repository": "git@github.com:brunorrr/react-quick-projects.git",
+  "author": "Bruno Ricci <brunoriccidossantos@hotmail.com>",
+  "workspaces": [
+    "packages/*"
+  ]
+}
