@@ -1,41 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-
-export type Character = {
-    id: string;
-    name: string;
-    status: string;
-    species: string;
-    image: string;
-};
-
-
 type FavoritesState = {
-    items: Record<string, Character>; // indexado por id
+    items: Record<number>;
 };
 
-
-const initialState: FavoritesState = { items: {} };
-
+const initialState: FavoritesState = { items: [] };
 
 const favoritesSlice = createSlice({
     name: 'favorites',
     initialState,
     reducers: {
-        toggleFavorite(state, action: PayloadAction<Character>) {
-            const c = action.payload;
-            if (state.items[c.id]) {
-                delete state.items[c.id];
-            } else {
-                state.items[c.id] = c;
-            }
+        addFavorite(state, action: PayloadAction<number>) {
+            state.items.push(action.payload);
         },
-        removeFavorite(state, action: PayloadAction<string>) {
-            delete state.items[action.payload];
+        removeFavorite(state, action: PayloadAction<number>) {
+            state.items = state.items.filter(id => id !== action.payload);
         },
     },
 });
 
-
-export const { toggleFavorite, removeFavorite } = favoritesSlice.actions;
+export const { addFavorite, removeFavorite } = favoritesSlice.actions;
 export default favoritesSlice.reducer;

@@ -6,6 +6,7 @@ type HomeStackParams = {
     HomeList: undefined;
     Details: { id: string };
     Profile: undefined;
+    Favorites: undefined;
 };
 
 type Props = NativeStackScreenProps<HomeStackParams, 'Profile'>;

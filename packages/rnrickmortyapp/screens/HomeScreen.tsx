@@ -25,8 +25,8 @@ type HomeStackParamList = {
     HomeList: undefined;
     Details: { id: string };
     Profile: undefined;
+    Favorites: undefined;
 };
-
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'HomeList'>;
 
