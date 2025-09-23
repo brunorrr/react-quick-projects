@@ -24,6 +24,7 @@ const CHARACTERS = gql`
 type HomeStackParamList = {
     HomeList: undefined;
     Details: { id: string };
+    Profile: undefined;
 };
 
 

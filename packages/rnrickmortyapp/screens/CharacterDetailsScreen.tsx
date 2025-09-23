@@ -21,6 +21,7 @@ query Character($id: ID!) {
 type HomeStackParams = {
     HomeList: undefined;
     Details: { id: string };
+    Profile: undefined;
 };
 
 type Props = NativeStackScreenProps<HomeStackParams, 'Details'>;
@@ -40,7 +41,6 @@ export const CharacterDetailsScreen: FC<Props> =  ({route}) => {
             <Text style={{ fontSize: 24, fontWeight: '700', marginTop: 12 }}>{character.name}</Text>
             <Text style={{ marginTop: 4 }}>{character.status} - {character.species}</Text>
             <Text style={{ marginTop: 4 }}>Location: {character.location?.name ?? '—'}</Text>
-
 
             <Text style={{ fontSize: 18, fontWeight: '600', marginTop: 16, marginBottom: 8 }}>Episodes</Text>
             {character.episode?.map((e: any) => (
