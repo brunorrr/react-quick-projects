@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import {FC, useMemo, useState} from 'react';
 import { View, FlatList, ActivityIndicator, Button, Text } from 'react-native';
 import { gql } from '@apollo/client';
 import { CharacterCard } from '../components/CharacterCard';
 import {useQuery} from "@apollo/client/react";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
 
 const CHARACTERS = gql`
   query Characters($page: Int) {
@@ -20,7 +21,15 @@ const CHARACTERS = gql`
   }
 `;
 
-export const HomeScreen: React.FC = () => {
+type HomeStackParamList = {
+    HomeList: undefined;
+    Details: { id: string };
+};
+
+
+type Props = NativeStackScreenProps<HomeStackParamList, 'HomeList'>;
+
+export const HomeScreen: FC<Props> = ({ navigation }) => {
     const [page, setPage] = useState(1);
     const { data, loading, error, fetchMore } = useQuery(CHARACTERS, {
         variables: { page },
@@ -51,7 +60,7 @@ export const HomeScreen: React.FC = () => {
                             species={item.species}
                             image={item.image}
                             location={item.location}
-                            onPress={() => {}}
+                            onPress={() => navigation.navigate('Details', { id: item.id })}
                         />
                     )}
                     contentContainerStyle={{ paddingBottom: 24 }}
@@ -59,7 +68,7 @@ export const HomeScreen: React.FC = () => {
                         nextPage ? (
                             <View style={{ padding: 16 }}>
                                 <Button
-                                    title={loading ? 'Carregando...' : 'Carregar mais'}
+                                    title={`Load${loading ? 'ing' : ` More (Page ${nextPage})`}`}
                                     onPress={async () => {
                                         if (!nextPage) return;
                                         await fetchMore({ variables: { page: nextPage } });

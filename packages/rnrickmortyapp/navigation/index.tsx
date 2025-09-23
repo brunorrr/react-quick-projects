@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from '../screens/HomeScreen';
+import { CharacterDetailsScreen } from "../screens/CharacterDetailsScreen.tsx";
 
 
 export type HomeStackParamList = {
@@ -16,7 +17,8 @@ const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 const HomeStackNavigator = () => (
     <HomeStack.Navigator>
-        <HomeStack.Screen name="HomeList" component={HomeScreen} options={{ title: 'Personagens' }} />
+        <HomeStack.Screen name="HomeList" component={HomeScreen} options={{ title: 'Characters List' }} />
+        <HomeStack.Screen name="Details" component={CharacterDetailsScreen} options={{ title: 'Character Details' }} />
     </HomeStack.Navigator>
 );
 
