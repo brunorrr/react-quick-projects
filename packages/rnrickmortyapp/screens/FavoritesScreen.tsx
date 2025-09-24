@@ -1,4 +1,4 @@
-import {FC} from "react";
+import { FC, useState } from 'react';
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {ActivityIndicator, FlatList, Text, View} from "react-native";
 import {CharacterCard} from "../components/CharacterCard.tsx";
@@ -32,6 +32,7 @@ type Props = NativeStackScreenProps<HomeStackParams, 'Favorites'>;
 
 export const FavoritesScreen: FC<Props> = ({navigation}) => {
     const favoriteIds = useSelector((state: any) => state.favorites.items);
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
     const { data, loading, error, fetchMore } = useQuery(CHARACTERS, {
         variables: { ids: favoriteIds },
@@ -45,6 +46,13 @@ export const FavoritesScreen: FC<Props> = ({navigation}) => {
         return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text>Error on loading</Text>
         </View>;
+    }
+    const toggleSelectId = (id: number) => {
+        if (selectedIds.includes(id)) {
+            setSelectedIds(selectedIds.filter(selectedId => selectedId !== id));
+        } else {
+            setSelectedIds([...selectedIds, id]);
+        }
     }
 
     return (

@@ -1,0 +1,24 @@
+{
+  "loading": {
+    "error": {
+      "generic": "Erro ao carregar"
+    },
+    "normal": {
+      "generic": "carregando...",
+      "more": "Carregar mais"
+    }
+  },
+  "home": {
+    "card": {
+      "label": {
+        "location": "Localização"
+      }
+    }
+  },
+  "details": {
+    "label": {
+      "location": "Localização",
+      "episodes": "Episódios"
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { gql } from '@apollo/client';
 import { CharacterCard } from '../components/CharacterCard';
 import {useQuery} from "@apollo/client/react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {useTranslation} from "react-i18next";
 
 const CHARACTERS = gql`
   query Characters($page: Int) {
@@ -36,13 +37,14 @@ export const HomeScreen: FC<Props> = ({ navigation }) => {
         variables: { page },
         fetchPolicy: 'no-cache',
     });
+    const { t } = useTranslation();
 
     const list = useMemo(() => data?.characters?.results ?? [], [data]);
     const nextPage = data?.characters?.info?.next as number | null | undefined;
 
     if (error) {
         return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Error on loading</Text>
+            <Text>{t("loading.error.generic")}</Text>
         </View>;
     }
 
@@ -69,7 +71,7 @@ export const HomeScreen: FC<Props> = ({ navigation }) => {
                         nextPage ? (
                             <View style={{ padding: 16 }}>
                                 <Button
-                                    title={`Load${loading ? 'ing' : ` More (Page ${nextPage})`}`}
+                                    title={loading ? t("loading.normal.generic") : t("loading.normal.more")}
                                     onPress={async () => {
                                         if (!nextPage) return;
                                         await fetchMore({ variables: { page: nextPage } });

@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 
 type Props = {
@@ -13,16 +14,17 @@ type Props = {
 
 
 export const CharacterCard: React.FC<Props> = ({onPress, name, status, species, image, location}) => {
-    return (
-        <TouchableOpacity onPress={onPress} style={styles.card}>
-            <Image source={{uri: image}} style={styles.image}/>
-            <View style={styles.info}>
-                <Text style={styles.name}>{name}</Text>
-                <Text>{status} • {species}</Text>
-                {location.name ? <Text style={styles.location}>Location: {location.name}</Text> : null}
-            </View>
-        </TouchableOpacity>
-    );
+  const { t } = useTranslation();
+  return (
+      <TouchableOpacity onPress={onPress} style={styles.card}>
+          <Image source={{uri: image}} style={styles.image}/>
+          <View style={styles.info}>
+              <Text style={styles.name}>{name}</Text>
+              <Text>{status} • {species}</Text>
+              {location.name ? <Text style={styles.location}>{t("home.card.label.location")}: {location.name}</Text> : null}
+          </View>
+      </TouchableOpacity>
+  );
 };
 
 

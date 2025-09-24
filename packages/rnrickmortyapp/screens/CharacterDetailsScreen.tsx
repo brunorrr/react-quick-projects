@@ -6,6 +6,7 @@ import {useQuery} from "@apollo/client/react";
 import {useSelector} from "react-redux";
 import {useAppDispatch} from "../store";
 import {addFavorite, removeFavorite} from "../store/favoritesSlice.ts";
+import {useTranslation} from "react-i18next";
 
 const CHARACTER = gql`
 query Character($id: ID!) {
@@ -31,6 +32,8 @@ type HomeStackParams = {
 type Props = NativeStackScreenProps<HomeStackParams, 'Details'>;
 
 export const CharacterDetailsScreen: FC<Props> =  ({route}) => {
+    const { t } = useTranslation();
+
     const id = route.params.id;
 
     const isFavorite:boolean = useSelector((state: any) => state.favorites.items.includes(id));
@@ -48,7 +51,7 @@ export const CharacterDetailsScreen: FC<Props> =  ({route}) => {
     const { data, loading, error } = useQuery(CHARACTER, { variables: { id }, fetchPolicy: 'no-cache' });
 
     if (loading) return <ActivityIndicator style={{ marginTop: 24 }} />;
-    if (error || !data?.character) return <Text>Error on loading</Text>;
+    if (error || !data?.character) return <Text>{t("loading.error.generic")}</Text>;
 
     const character = data.character || {};
     return (
@@ -57,9 +60,9 @@ export const CharacterDetailsScreen: FC<Props> =  ({route}) => {
             <Image source={{ uri: character.image }} style={{ width: '100%', height: 300, borderRadius: 12 }} />
             <Text style={{ fontSize: 24, fontWeight: '700', marginTop: 12 }}>{character.name}</Text>
             <Text style={{ marginTop: 4 }}>{character.status} - {character.species}</Text>
-            <Text style={{ marginTop: 4 }}>Location: {character.location?.name ?? '—'}</Text>
+            <Text style={{ marginTop: 4 }}>{t("details.label.location")}: {character.location?.name ?? '—'}</Text>
 
-            <Text style={{ fontSize: 18, fontWeight: '600', marginTop: 16, marginBottom: 8 }}>Episodes</Text>
+            <Text style={{ fontSize: 18, fontWeight: '600', marginTop: 16, marginBottom: 8 }}>{t("details.label.episodes")}</Text>
             {character.episode?.map((e: any) => (
                 <Text key={e.id} style={{ paddingVertical: 4 }}>- {e.name}</Text>
             ))}

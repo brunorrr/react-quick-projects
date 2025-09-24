@@ -5,6 +5,7 @@ import {apollo} from "./client/apollo.ts";
 import {RootNavigator} from "./navigation";
 import {Provider} from "react-redux";
 import {store} from "./store";
+import "./i18n.config";
 
 
 const App = () => {
