@@ -32,9 +32,8 @@ type Props = NativeStackScreenProps<HomeStackParams, 'Favorites'>;
 
 export const FavoritesScreen: FC<Props> = ({navigation}) => {
     const favoriteIds = useSelector((state: any) => state.favorites.items);
-    const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
-    const { data, loading, error, fetchMore } = useQuery(CHARACTERS, {
+    const { data, loading, error } = useQuery(CHARACTERS, {
         variables: { ids: favoriteIds },
         fetchPolicy: 'no-cache',
         skip: favoriteIds.length === 0,
@@ -47,13 +46,6 @@ export const FavoritesScreen: FC<Props> = ({navigation}) => {
             <Text>Error on loading</Text>
         </View>;
     }
-    const toggleSelectId = (id: number) => {
-        if (selectedIds.includes(id)) {
-            setSelectedIds(selectedIds.filter(selectedId => selectedId !== id));
-        } else {
-            setSelectedIds([...selectedIds, id]);
-        }
-    }
 
     return (
         <View style={{ flex: 1 }}>
@@ -65,6 +57,7 @@ export const FavoritesScreen: FC<Props> = ({navigation}) => {
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
                         <CharacterCard
+                            id={item.id}
                             name={item.name}
                             status={item.status}
                             species={item.species}

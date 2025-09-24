@@ -7,12 +7,9 @@ import { CharacterDetailsScreen } from "../screens/CharacterDetailsScreen.tsx";
 import {UserProfileScreen} from "../screens/UserProfileScreen.tsx";
 import {FavoritesScreen} from "../screens/FavoritesScreen.tsx";
 
-
 export type HomeStackParamList = {
-    HomeList: undefined;
     Details: { id: string };
 };
-
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -32,9 +29,7 @@ const FavoritesStackNavigator = () => (
     </FavoritesStack.Navigator>
 );
 
-
 const Tab = createBottomTabNavigator();
-
 
 export const RootNavigator = () => (
     <NavigationContainer>

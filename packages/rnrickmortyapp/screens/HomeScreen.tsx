@@ -58,6 +58,7 @@ export const HomeScreen: FC<Props> = ({ navigation }) => {
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
                         <CharacterCard
+                            id={item.id}
                             name={item.name}
                             status={item.status}
                             species={item.species}

@@ -1,20 +1,44 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
-
+import { useSelector } from 'react-redux';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
+import { useAppDispatch } from '../store';
+import { addFavorite, removeFavorite } from '../store/favoritesSlice.ts';
 
 type Props = {
-    onPress: () => void,
-    name?: unknown,
-    status?: unknown,
-    species?: unknown,
-    image?: unknown,
-    location?: any
+  onPress: () => void,
+  onFavoritePress?: () => void,
+  id: number;
+  name?: string,
+  status?: string,
+  species?: string,
+  image?: string,
+  location?: any
 };
 
 
-export const CharacterCard: React.FC<Props> = ({onPress, name, status, species, image, location}) => {
+export const CharacterCard: React.FC<Props> = ({onPress, onFavoritePress, id, name, status, species, image, location}) => {
   const { t } = useTranslation();
+  const isFavorite:boolean = useSelector((state: any) => state.favorites.items).includes(id);
+  const dispatch = useAppDispatch();
+
+  const toggleFavorite = () => {
+    if(isFavorite) {
+      dispatch(removeFavorite(id));
+    }
+    else {
+      dispatch(addFavorite(id));
+    }
+  }
+
   return (
       <TouchableOpacity onPress={onPress} style={styles.card}>
           <Image source={{uri: image}} style={styles.image}/>
@@ -23,6 +47,15 @@ export const CharacterCard: React.FC<Props> = ({onPress, name, status, species, 
               <Text>{status} • {species}</Text>
               {location.name ? <Text style={styles.location}>{t("home.card.label.location")}: {location.name}</Text> : null}
           </View>
+          <TouchableWithoutFeedback onPress={toggleFavorite}>
+            <View style={{paddingTop: 20}}>
+              <FontAwesome
+                name={isFavorite ? 'star' : 'star-o'}
+                size={32}
+                color={'orange'}
+              />
+            </View>
+          </TouchableWithoutFeedback>
       </TouchableOpacity>
   );
 };
