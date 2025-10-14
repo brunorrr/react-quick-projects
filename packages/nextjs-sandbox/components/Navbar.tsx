@@ -1,10 +1,24 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useEffect, useState } from "react";
 import logo from "@assets/images/logo-white.png";
 import profile from "@assets/images/profile.png";
+import { FaGoogle } from "react-icons/fa";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const path = usePathname();
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMenuOpen(false);
+      setIsProfileMenuOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <nav className="bg-blue-700 border-b border-blue-500">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -17,6 +31,7 @@ const Navbar = () => {
               className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <span className="absolute -inset-0.5"></span>
               <span className="sr-only">Open main menu</span>
@@ -39,10 +54,7 @@ const Navbar = () => {
 
           <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
             {/* <!-- Logo --> */}
-            <Link
-              className="flex flex-shrink-0 items-center"
-              href="/index.html"
-            >
+            <Link className="flex flex-shrink-0 items-center" href="/">
               <Image
                 className="h-10 w-auto"
                 src={logo}
@@ -59,23 +71,23 @@ const Navbar = () => {
             <div className="hidden md:ml-6 md:block">
               <div className="flex space-x-2">
                 <Link
-                  href="/index.html"
-                  className="text-white bg-black hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                  href="/"
+                  className={`text-white ${path === "/" ? "bg-black" : ""} hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
                   Home
                 </Link>
-                <a
-                  href="/properties.html"
-                  className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                <Link
+                  href="/properties"
+                  className={`text-white ${path === "/properties" ? "bg-black" : ""} hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
                   Properties
-                </a>
-                <a
-                  href="/add-property.html"
-                  className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                </Link>
+                <Link
+                  href="/properties/add"
+                  className={`text-white ${path === "/properties/add" ? "bg-black" : ""} hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
                   Add Property
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -84,7 +96,7 @@ const Navbar = () => {
           <div className="hidden md:block md:ml-6">
             <div className="flex items-center">
               <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
-                <i className="fa-brands fa-google text-white mr-2"></i>
+                <FaGoogle className="text-white mr-2" />
                 <span>Login or Register</span>
               </button>
             </div>
@@ -92,7 +104,7 @@ const Navbar = () => {
 
           {/* <!-- Right Side Menu (Logged In) --> */}
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
-            <a href="messages.html" className="relative group">
+            <Link href="/messages" className="relative group">
               <button
                 type="button"
                 className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -118,7 +130,7 @@ const Navbar = () => {
                 2
                 {/* <!-- Replace with the actual number of notifications --> */}
               </span>
-            </a>
+            </Link>
             {/* <!-- Profile dropdown button --> */}
             <div className="relative ml-3">
               <div>
@@ -128,6 +140,7 @@ const Navbar = () => {
                   id="user-menu-button"
                   aria-expanded="false"
                   aria-haspopup="true"
+                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                 >
                   <span className="absolute -inset-1.5"></span>
                   <span className="sr-only">Open user menu</span>
@@ -142,74 +155,78 @@ const Navbar = () => {
               </div>
 
               {/* <!-- Profile dropdown --> */}
-              <div
-                id="user-menu"
-                className="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="user-menu-button"
-                tabIndex={-1}
-              >
-                <a
-                  href="/profile.html"
-                  className="block px-4 py-2 text-sm text-gray-700"
-                  role="menuitem"
+              {isProfileMenuOpen && (
+                <div
+                  id="user-menu"
+                  className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu-button"
                   tabIndex={-1}
-                  id="user-menu-item-0"
                 >
-                  Your Profile
-                </a>
-                <a
-                  href="saved-properties.html"
-                  className="block px-4 py-2 text-sm text-gray-700"
-                  role="menuitem"
-                  tabIndex={-1}
-                  id="user-menu-item-2"
-                >
-                  Saved Properties
-                </a>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700"
-                  role="menuitem"
-                  tabIndex={-1}
-                  id="user-menu-item-2"
-                >
-                  Sign Out
-                </a>
-              </div>
+                  <Link
+                    href="/profile"
+                    className="block px-4 py-2 text-sm text-gray-700"
+                    role="menuitem"
+                    tabIndex={-1}
+                    id="user-menu-item-0"
+                  >
+                    Your Profile
+                  </Link>
+                  <Link
+                    href="saved-properties"
+                    className="block px-4 py-2 text-sm text-gray-700"
+                    role="menuitem"
+                    tabIndex={-1}
+                    id="user-menu-item-2"
+                  >
+                    Saved Properties
+                  </Link>
+                  <Link
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700"
+                    role="menuitem"
+                    tabIndex={-1}
+                    id="user-menu-item-2"
+                  >
+                    Sign Out
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
-      <div className="hidden" id="mobile-menu">
-        <div className="space-y-1 px-2 pb-3 pt-2">
-          <Link
-            href="/index.html"
-            className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
-          >
-            Home
-          </Link>
-          <a
-            href="/properties.html"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-          >
-            Properties
-          </a>
-          <a
-            href="/add-property.html"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-          >
-            Add Property
-          </a>
-          <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4">
-            <i className="fa-brands fa-google mr-2"></i>
-            <span>Login or Register</span>
-          </button>
+      {isMenuOpen && (
+        <div id="mobile-menu">
+          <div className="space-y-1 px-2 pb-3 pt-2">
+            <Link
+              href="/"
+              className={`${path === "/" ? "bg-gray-900" : "text-gray-300"} text-white block rounded-md px-3 py-2 text-base font-medium`}
+            >
+              Home
+            </Link>
+            <Link
+              href="/properties"
+              className={`${path === "/" ? "bg-gray-900" : "text-gray-300"} text-white block rounded-md px-3 py-2 text-base font-medium`}
+            >
+              Properties
+            </Link>
+            <Link
+              href="/properties/add"
+              className={`${path === "/" ? "bg-gray-900" : "text-gray-300"} text-white block rounded-md px-3 py-2 text-base font-medium`}
+            >
+              Add Property
+            </Link>
+            <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4 cursor-pointer">
+              <FaGoogle className="text-white mr-2" />
+              <span>Login or Register</span>
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 };
